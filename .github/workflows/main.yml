@@ -42,6 +42,7 @@ jobs:
         env:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
           DOC_ID: ${{ secrets.GOOGLE_SHEET_DOC_ID }}
+          GAS_URL: ${{ secrets.GAS_URL }}
         run: |
           python build_site.py
 

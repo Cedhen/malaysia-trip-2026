@@ -14,6 +14,7 @@ def main():
     # 1. 取得環境變數
     api_key = os.environ.get('GOOGLE_API_KEY')
     sheet_id = os.environ.get('DOC_ID')
+    gas_url = os.environ.get('GAS_URL', '預設網址')
     
     if not api_key or not sheet_id:
         print("❌ Error: GOOGLE_API_KEY or DOC_ID not found.")
@@ -189,6 +190,19 @@ def main():
         # It's okay if Site tab doesn't exist
         print(f"⚠️ Site metadata warning: {e}")
 
+    # 3.6 處理帳務記錄的付款人選項 (Accounting Tab)
+    acc_payers_options = ""
+    print("💰 Fetching Accounting payers...")
+    try:
+        acc_res = sheet.values().get(spreadsheetId=sheet_id, range='Accounting!A:B').execute()
+        acc_rows = acc_res.get('values', [])
+        for row in acc_rows[1:]:  # skip header
+            if row:
+                value,payer = row[0].strip(), row[1].strip()
+                if payer:
+                    acc_payers_options += f'<option value="{value}">{payer}</option>\n'
+    except Exception as e:
+        print(f"⚠️ Accounting payers warning: {e}")
     # --- 4. 生成檔案 ---
     print("🏗️ Building files...")
     # 讀取模板
@@ -203,6 +217,8 @@ def main():
     final_html = final_html.replace('{{H1_TITLE}}', site_meta.get('H1_TITLE'))
     final_html = final_html.replace('{{SUBTITLE}}', site_meta.get('SUBTITLE'))
     final_html = final_html.replace('{{FOOTER}}', site_meta.get('FOOTER', 'MALAYSIA 2026 | FAMILY TRAVEL ASSISTANT'))
+    # inject accounting payers options
+    final_html = final_html.replace('{{ACC_PAYERS_OPTIONS}}', acc_payers_options)
 
     # 注入匯率和天氣設定
     final_html = final_html.replace('{{WEATHER_CITY}}', weather_city)
@@ -264,6 +280,17 @@ def main():
     if os.path.exists('favicon.svg'):
         import shutil
         shutil.copy('favicon.svg', 'public/favicon.svg')                
+
+    # 2. 讀取 JS 模板並替換佔位符
+    with open('script.js', 'r', encoding='utf-8') as f:
+        content = f.read()
+
+    # 將 JS 裡的 {{GAS_URL}} 替換成真正的 Secret
+    final_js = content.replace('{{GAS_URL}}', gas_url)
+
+    # 3. 寫入到部署用的資料夾
+    with open('public/script.js', 'w', encoding='utf-8') as f:
+        f.write(final_js)
 
     print("✨ Build Success! Files are ready in /public")
 

@@ -1,3 +1,4 @@
+const GAS_WEB_APP_URL = "{{GAS_URL}}";
 const CORRECT_PASSWORD = "158A323A7BA44870F23D96F1516DD70AA48E9A72DB4EBB026B0A89E212A208AB";
 let isShowAll = false;
 
@@ -398,4 +399,53 @@ function initPullToRefresh() {
         touchMove = 0;
         isPulling = false;
     });
+}
+async function submitExpense() {
+    const amount = document.getElementById('acc-amount').value;
+    const currency = document.getElementById('acc-currency').value;
+    const item = document.getElementById('acc-item').value;
+    const payer = document.getElementById('acc-payer').value;
+    const category = document.getElementById('acc-category').value; const btn = document.getElementById('acc-btn');
+
+    if (!amount || !item) {
+        alert("請輸入金額與項目內容");
+        return;
+    }
+
+    // 檢查 URL 是否已注入
+    if (GAS_WEB_APP_URL === "" || GAS_WEB_APP_URL.includes("{{")) {
+        alert("系統錯誤：未偵測到後端網址");
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerText = "同步中...";
+
+    try {
+        await fetch(GAS_WEB_APP_URL, {
+            method: 'POST',
+            mode: 'no-cors', // 保持 no-cors
+            cache: 'no-cache',
+            // ⚠️ 關鍵：移除 headers 區塊，不要寫 Content-Type
+            body: JSON.stringify({
+                amount: amount,
+                currency: currency,
+                item: item,
+                payer: payer,
+                category: category
+            })
+        });
+
+        // ✅ 由於 no-cors 無法讀取回傳值，我們直接假設成功
+        alert("✅ 記錄已送出！");
+        document.getElementById('acc-amount').value = '';
+        document.getElementById('acc-item').value = '';
+        if (navigator.vibrate) navigator.vibrate(50);
+    } catch (e) {
+        console.error("Fetch Error:", e);
+        alert("❌ 儲存失敗，請檢查網路連接");
+    } finally {
+        btn.disabled = false;
+        btn.innerText = "儲存記錄";
+    }
 }
