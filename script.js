@@ -255,12 +255,9 @@ async function fetchWeather() {
 
         // 步驟2: 使用座標獲取天氣資訊（Open-Meteo Weather API）
         const weatherResponse = await fetch(
-            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=auto`
+            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=auto`
         );
         const weatherData = await weatherResponse.json();
-
-        const temp = Math.round(weatherData.current.temperature_2m);
-        const weatherCode = weatherData.current.weather_code;
 
         // WMO Weather interpretation codes（世界氣象組織天氣代碼）
         const weatherInfo = {
@@ -294,11 +291,22 @@ async function fetchWeather() {
             99: { emoji: '⛈️', desc: '強雷暴伴冰雹' }
         };
 
-        const weather = weatherInfo[weatherCode] || { emoji: '🌤️', desc: '未知' };
+        // 處理當前天氣
+        const temp = Math.round(weatherData.current.temperature_2m);
+        const weatherCode = weatherData.current.weather_code;
+        const currentWeather = weatherInfo[weatherCode] || { emoji: '🌤️', desc: '未知' };
 
-        document.getElementById('weather-icon').innerText = weather.emoji;
+        document.getElementById('weather-icon').innerText = currentWeather.emoji;
         document.getElementById('weather-temp').innerText = `${temp}°C`;
-        document.getElementById('weather-desc').innerText = weather.desc;
+        document.getElementById('weather-desc').innerText = currentWeather.desc;
+
+        // 獲取今天的天氣預報數據 (index 0)
+        const todayMaxTemp = Math.round(weatherData.daily.temperature_2m_max[0]);
+        const todayMinTemp = Math.round(weatherData.daily.temperature_2m_min[0]);
+        const todayPrecipitation = weatherData.daily.precipitation_sum[0];
+
+        document.getElementById('weather-temp-range').innerText = `${todayMinTemp}°C / ${todayMaxTemp}°C`;
+        document.getElementById('weather-precipitation').innerText = todayPrecipitation > 0 ? `降雨: ${todayPrecipitation.toFixed(1)}mm` : '無降雨';
     } catch (error) {
         console.error('天氣載入失敗:', error);
         document.getElementById('weather-temp').innerText = '--';
