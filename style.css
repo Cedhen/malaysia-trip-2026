@@ -458,3 +458,134 @@ body {
     /* The acc-amount-currency-group is intentionally left out to keep them in a row */
     /* The .amount-font and acc-currency will use their non-mobile flex properties */
 }
+
+
+/* 導覽列佈局調整 */
+.nav-left-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* 按鈕與時間的間距 */
+}
+
+/* 導覽列上的過敏按鈕 - 極簡樣式 */
+.allergy-nav-btn {
+    background: rgba(139, 0, 0, 0.05);
+    /* 極淡的紅色背景 */
+    border: 1px solid rgba(139, 0, 0, 0.2);
+    color: var(--gray-text);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s;
+}
+
+.allergy-nav-btn:hover {
+    background: rgba(139, 0, 0, 0.1);
+    border-color: #8B0000;
+}
+
+/* Modal 遮罩層 */
+.modal-overlay {
+    display: none;
+    /* 由 JS 切換為 flex */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100dvh;
+    /* 使用 dvh 確保在手機上完美置中 */
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 10000;
+
+    /* 置中關鍵 */
+    align-items: center;
+    justify-content: center;
+
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+/* Modal 本體 */
+.modal-content {
+    background: var(--card-bg);
+    width: 100%;
+    max-width: 350px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    animation: modalPop 0.2s ease-out;
+}
+
+@keyframes modalPop {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    background: #8B0000;
+    color: white;
+    padding: 12px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+
+.close-btn {
+    font-size: 24px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.modal-body {
+    padding: 20px;
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+.malay-box {
+    background: #FFEBEE;
+    border: 1.5px solid #8B0000;
+    padding: 15px;
+    text-align: center;
+    font-size: 17px;
+    font-weight: bold;
+    color: #B71C1C;
+    border-radius: 6px;
+    margin: 15px 0;
+}
+
+.modal-close-action {
+    width: 100%;
+    padding: 10px;
+    background: var(--bg-gold);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-color);
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* 手機版隱藏按鈕文字，僅顯示圖示 */
+@media (max-width: 240px) {
+    .allergy-nav-btn span {
+        display: none;
+    }
+
+    .allergy-nav-btn {
+        padding: 4px 4px;
+        font-size: 14px;
+    }
+}

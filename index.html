@@ -40,7 +40,41 @@
             <div class="subtitle">{{SUBTITLE}}</div>
         </div>
 
-        <div id="current-date" class="date-display">載入時鐘中...</div>
+        <div class="nav-info">
+            <div class="nav-left-group">
+                <button onclick="openAllergyModal()" class="allergy-nav-btn" title="Allergy Card">
+                    ⚠️ <span>過敏說明</span>
+                </button>
+            </div>
+            <div id="current-date" class="date-display">載入時鐘中...</div>
+        </div>
+
+        <div id="allergyModal" class="modal-overlay" onclick="closeAllergyModal()">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <div class="modal-header">
+                    <span>⚠️ 緊急過敏說明 / Emergency</span>
+                    <span class="close-btn" onclick="closeAllergyModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <p><strong>To the server / 致服務生：</strong></p>
+                    <p style="font-size: 0.95em; line-height: 1.4;">
+                        我們的成員對<b>蝦類</b>有嚴重的過敏。請確保餐點中不含任何蝦子、蝦米或蝦膏 (Belacan)。<br><br>
+                        Our guest has a <b>SEVERE ALLERGY to SHRIMPS/PRAWNS</b>. Please ensure the food contains:
+                    </p>
+                    <ul style="color: #e00a0a; font-weight: bold; font-size: 1.1em; list-style: none; padding: 0;">
+                        <li>❌ NO Shrimps / Prawns</li>
+                        <li>❌ NO Shrimp Paste (Belacan)</li>
+                        <li>❌ NO Dried Shrimps (Udang Kering)</li>
+                    </ul>
+                    <div class="malay-box">
+                        ALERGI TERUK UDANG.<br>
+                        Tiada udang, tiada belacan, tiada udang kering.
+                    </div>
+                    <button onclick="closeAllergyModal()" class="modal-close-action">關閉 / Close</button>
+                </div>
+            </div>
+        </div>
+
 
         <!-- 匯率與天氣資訊 -->
         <div class="info-cards">
@@ -102,6 +136,34 @@
                 <button onclick="submitExpense()" id="acc-btn" class="acc-submit-btn">儲存至雲端帳簿</button>
             </div>
         </div>
+
+        <!-- <div id="allergy-section" class="checklist-section" style="border-top: 5px solid #8B0000;">
+            <div class="checklist-title" onclick="toggleAllergyCard()" style="cursor:pointer;">
+                <span class="checklist-heading" style="color: #8B0000;">⚠️ 緊急過敏說明 (點擊展開)</span>
+                <span id="allergy-chevron">▶</span>
+            </div>
+
+            <div id="allergy-content"
+                style="display: none; background: #FFF; padding: 15px; border-radius: 10px; margin-top: 10px; border: 2px solid #8B0000;">
+                <p style="font-weight: bold; font-size: 1.1em; color: #8B0000; margin-bottom: 5px;">致餐廳服務生 / To the
+                    server:</p>
+                <p style="font-size: 0.95em; line-height: 1.4; color: #333;">
+                    我們的成員對<b>蝦類</b>有嚴重的過敏。請確保餐點中不含任何蝦子、蝦米或蝦膏 (Belacan)。<br><br>
+                    Our guest has a <b>SEVERE ALLERGY to SHRIMPS/PRAWNS</b>. Please ensure the food contains:
+                </p>
+                <ul style="color: #8B0000; font-weight: bold; font-size: 1.1em; list-style: none; padding: 0;">
+                    <li>❌ NO Shrimps / Prawns</li>
+                    <li>❌ NO Shrimp Paste (Belacan)</li>
+                    <li>❌ NO Dried Shrimps (Udang Kering)</li>
+                </ul>
+                <hr style="border: 0.5px dashed #ccc;">
+                <p style="font-size: 1.2em; font-weight: bold; background: #FFEBEE; padding: 10px; text-align: center;">
+                    ALERGI TERUK TERHADAP UDANG.<br>
+                    Tiada udang, tiada belacan, tiada udang kering.
+                </p>
+            </div>
+        </div> -->
+
         <div id="dynamic-checklist" class="checklist-section">
             <div class="checklist-title">
                 <span class="checklist-heading"><svg class="icon-clipboard" viewBox="0 0 24 24" aria-hidden="true"

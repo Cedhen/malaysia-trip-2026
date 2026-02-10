@@ -449,3 +449,18 @@ async function submitExpense() {
         btn.innerText = "儲存記錄";
     }
 }
+
+function openAllergyModal() {
+    document.getElementById('allergyModal').style.display = 'flex';
+    // 增加一個震動提醒，確保使用者知道點擊成功
+    if (navigator.vibrate) navigator.vibrate(20);
+}
+
+function closeAllergyModal() {
+    document.getElementById('allergyModal').style.display = 'none';
+}
+
+// 監聽 Esc 鍵關閉彈窗
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeAllergyModal();
+});
