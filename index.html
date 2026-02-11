@@ -86,14 +86,19 @@
                     <div class="info-detail">1 {{EXCHANGE_FROM}} = ? {{EXCHANGE_TO}}</div>
                 </div>
             </div>
-            <div class="info-card weather-card">
-                <div class="info-icon" id="weather-icon">🌤️</div>
-                <div class="info-content">
-                    <div class="info-label">{{WEATHER_CITY}} 天氣</div>
-                    <div class="info-value" id="weather-temp">載入中...</div>
-                    <div class="info-detail" id="weather-desc">--</div>
-                    <div class="info-detail" id="weather-temp-range">--</div>
-                    <div class="info-detail" id="weather-precipitation">--</div>
+            <div class="info-card weather-card weather-card-full">
+                <div class="weather-today">
+                    <div class="info-icon" id="weather-icon">🌤️</div>
+                    <div class="info-content">
+                        <div class="info-label">{{WEATHER_CITY}} 天氣</div>
+                        <div class="info-value" id="weather-temp">載入中...</div>
+                        <div class="info-detail" id="weather-desc">--</div>
+                        <div class="info-detail" id="weather-temp-range">--</div>
+                        <div class="info-detail" id="weather-precipitation">--</div>
+                    </div>
+                </div>
+                <div class="weather-forecast" id="weather-forecast">
+                    <!-- 未來三天天氣預報將由 JavaScript 動態插入 -->
                 </div>
             </div>
         </div>
@@ -138,33 +143,6 @@
                 <button onclick="submitExpense()" id="acc-btn" class="acc-submit-btn">儲存至雲端帳簿</button>
             </div>
         </div>
-
-        <!-- <div id="allergy-section" class="checklist-section" style="border-top: 5px solid #8B0000;">
-            <div class="checklist-title" onclick="toggleAllergyCard()" style="cursor:pointer;">
-                <span class="checklist-heading" style="color: #8B0000;">⚠️ 緊急過敏說明 (點擊展開)</span>
-                <span id="allergy-chevron">▶</span>
-            </div>
-
-            <div id="allergy-content"
-                style="display: none; background: #FFF; padding: 15px; border-radius: 10px; margin-top: 10px; border: 2px solid #8B0000;">
-                <p style="font-weight: bold; font-size: 1.1em; color: #8B0000; margin-bottom: 5px;">致餐廳服務生 / To the
-                    server:</p>
-                <p style="font-size: 0.95em; line-height: 1.4; color: #333;">
-                    我們的成員對<b>蝦類</b>有嚴重的過敏。請確保餐點中不含任何蝦子、蝦米或蝦膏 (Belacan)。<br><br>
-                    Our guest has a <b>SEVERE ALLERGY to SHRIMPS/PRAWNS</b>. Please ensure the food contains:
-                </p>
-                <ul style="color: #8B0000; font-weight: bold; font-size: 1.1em; list-style: none; padding: 0;">
-                    <li>❌ NO Shrimps / Prawns</li>
-                    <li>❌ NO Shrimp Paste (Belacan)</li>
-                    <li>❌ NO Dried Shrimps (Udang Kering)</li>
-                </ul>
-                <hr style="border: 0.5px dashed #ccc;">
-                <p style="font-size: 1.2em; font-weight: bold; background: #FFEBEE; padding: 10px; text-align: center;">
-                    ALERGI TERUK TERHADAP UDANG.<br>
-                    Tiada udang, tiada belacan, tiada udang kering.
-                </p>
-            </div>
-        </div> -->
 
         <div id="dynamic-checklist" class="checklist-section">
             <div class="checklist-title">

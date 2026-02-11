@@ -307,10 +307,49 @@ async function fetchWeather() {
 
         document.getElementById('weather-temp-range').innerText = `${todayMinTemp}°C / ${todayMaxTemp}°C`;
         document.getElementById('weather-precipitation').innerText = todayPrecipitation > 0 ? `降雨: ${todayPrecipitation.toFixed(1)}mm` : '無降雨';
+
+        // 處理未來三天的天氣預報
+        const forecastContainer = document.getElementById('weather-forecast');
+        forecastContainer.innerHTML = ''; // 清空舊資料
+
+        // 獲取未來三天的日期
+        const today = new Date();
+        const weekdays = ['週日', '週一', '週二', '週三', '週四', '週五', '週六'];
+
+        for (let i = 1; i <= 3; i++) {
+            const futureDate = new Date(today);
+            futureDate.setDate(today.getDate() + i);
+
+            const dayName = weekdays[futureDate.getDay()];
+            const dateStr = `${futureDate.getMonth() + 1}/${futureDate.getDate()}`;
+
+            const maxTemp = Math.round(weatherData.daily.temperature_2m_max[i]);
+            const minTemp = Math.round(weatherData.daily.temperature_2m_min[i]);
+            const precipitation = weatherData.daily.precipitation_sum[i];
+
+            // 使用平均溫度來推估大致天氣（這是簡化版，實際上 API 也有提供每日天氣代碼）
+            let weatherEmoji = '☀️';
+            if (precipitation > 5) {
+                weatherEmoji = '🌧️';
+            } else if (precipitation > 0) {
+                weatherEmoji = '🌦️';
+            }
+
+            const forecastItem = document.createElement('div');
+            forecastItem.className = 'forecast-day';
+            forecastItem.innerHTML = `
+                <div class="forecast-date">${dayName}<br>${dateStr}</div>
+                <div class="forecast-icon">${weatherEmoji}</div>
+                <div class="forecast-temp">${minTemp}° / ${maxTemp}°</div>
+            `;
+
+            forecastContainer.appendChild(forecastItem);
+        }
     } catch (error) {
         console.error('天氣載入失敗:', error);
         document.getElementById('weather-temp').innerText = '--';
         document.getElementById('weather-desc').innerText = '無法載入天氣';
+        document.getElementById('weather-forecast').innerHTML = '';
     }
 }
 
